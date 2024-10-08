@@ -59,7 +59,7 @@ app.post("/", async (req, res) => {
 
 app.listen(port, () => {
       mongoose
-            .connect(process.env.ATLAS_URI)
+            .connect("mongodb+srv://leonardobrumdev:sMd6hZNYnRim6ivn@aprender-para-vida.tihfy.mongodb.net/?retryWrites=true&w=majority&appName=aprender-para-vida")
             .then(() => console.log("BD conectado"))
             .catch(err => console.log(err));
       console.log(`Está rodando na porta: ${port}`)
