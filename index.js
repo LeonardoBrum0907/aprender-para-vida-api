@@ -14,35 +14,44 @@ const Volunteers = mongoose.model('Volunteers', {
       address: String,
       area: String,
       availability: String,
+      status: String,
       comment: String
 })
 
-app.get("/", async (req, res) => {
+const Helped = mongoose.model('Helped', {
+      name: String,
+      email: String,
+      phone: String,
+      address: String,
+      area: String,
+      status: String,
+      comment: String
+})
+
+//volunteers
+app.get("/volunteers", async (req, res) => {
       const volunteers = await Volunteers.find()
       return res.send(volunteers)
 })
 
-app.delete("/:id",  async (req, res) => {
+app.delete("/volunteers/:id",  async (req, res) => {
       const volunteer = await Volunteers.findByIdAndDelete(req.params.id);
       return res.send(volunteer)
 })
 
-app.put("/:id",  async (req, res) => {
-      const volunteer = await Volunteers.findByIdAndUpdate(req.params.id, {
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            address: req.body.address,
-            area: req.body.area,
-            availability: req.body.availability,
-            comment: req.body.comment
+app.put("/volunteers/:id",  async (req, res) => {      
+      await Volunteers.updateOne({ _id: new mongoose.mongo.ObjectId(req.params.id) }, {
+            ...req.body
       }, {
             new: true
       });
-      return res.send(volunteer)
+
+      const updatedVolunteer = await Volunteers.findById(req.params.id);
+
+      return res.send(updatedVolunteer)
 })
 
-app.post("/", async (req, res) => {
+app.post("/volunteers", async (req, res) => {
       const volunteer = new Volunteers({
             name: req.body.name,
             email: req.body.email,
@@ -50,11 +59,53 @@ app.post("/", async (req, res) => {
             address: req.body.address,
             area: req.body.area,
             availability: req.body.availability,
+            status: req.body.status,
             comment: req.body.comment
       })
 
       await volunteer.save()
       return res.send(volunteer)
+})
+
+//helped
+app.get("/helped", async (req, res) => {
+      const helped = await Helped.find()
+      return res.send(helped)
+})
+
+app.delete("/helped/:id",  async (req, res) => {
+      const helped = await Helped.findByIdAndDelete(req.params.id);
+      return res.send(helped)
+})
+
+app.put("/helped/:id",  async (req, res) => {
+      const helped = await Helped.findByIdAndUpdate(req.params.id, {
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            address: req.body.address,
+            area: req.body.area,
+            status: req.body.status,
+            comment: req.body.comment
+      }, {
+            new: true
+      });
+      return res.send(helped)
+})
+
+app.post("/helped", async (req, res) => {
+      const helped = new Helped({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            address: req.body.address,
+            area: req.body.area,
+            status: req.body.status,
+            comment: req.body.comment
+      })
+
+      await helped.save()
+      return res.send(helped)
 })
 
 app.listen(port, () => {
