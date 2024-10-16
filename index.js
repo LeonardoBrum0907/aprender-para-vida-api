@@ -37,7 +37,8 @@ app.get("/volunteers", async (req, res) => {
 })
 
 app.delete("/volunteers/:id",  async (req, res) => {
-      const volunteer = await Volunteers.findByIdAndDelete(req.params.id);
+      await Volunteers.findByIdAndDelete(req.params.id);
+      const volunteer = Volunteers.find()
       return res.send(volunteer)
 })
 
@@ -76,8 +77,9 @@ app.get("/helped", async (req, res) => {
 })
 
 app.delete("/helped/:id",  async (req, res) => {
-      const helped = await Helped.findByIdAndDelete(req.params.id);
-      return res.send(helped)
+      await Helped.findByIdAndDelete(req.params.id);
+      const helped = await Helped.find();
+      return res.send(helped);
 })
 
 app.put("/helped/:id",  async (req, res) => {
