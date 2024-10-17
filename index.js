@@ -38,7 +38,7 @@ app.get("/volunteers", async (req, res) => {
 
 app.delete("/volunteers/:id",  async (req, res) => {
       await Volunteers.findByIdAndDelete(req.params.id);
-      const volunteer = Volunteers.find()
+      const volunteer = await Volunteers.find()
       return res.send(volunteer)
 })
 
